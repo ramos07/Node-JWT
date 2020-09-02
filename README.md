@@ -32,7 +32,7 @@
 
 ---
 
-## API Routes
+## API Routes :traffic_light:
 
 ### Authentication Routes
 
