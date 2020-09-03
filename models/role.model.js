@@ -1,16 +1,12 @@
 /**
- * Creating Role schema for Sequelize
+ * Creating Role schema for Mongoose
  */
+const mongoose = require("mongoose");
 
-module.exports = (sequelize, Sequelize) => {
-    const Role = sequelize.define("roles", {
-        id: {
-            type: Sequelize.STRING,
-            primaryKey: true,
-        },
-        name: {
-            type: Sequelize.STRING,
-        },
-    });
-    return Role;
-};
+const RoleSchema = new mongoose.Schema({
+    name: {
+        type: String,
+    },
+});
+
+module.exports = mongoose.model("Role", RoleSchema);

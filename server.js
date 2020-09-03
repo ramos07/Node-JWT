@@ -6,33 +6,53 @@ require("dotenv").config();
 // Declare instance of express app
 const app = express();
 
-// MySQL/Sequelize config
+// Mongoose config
 const db = require("./models");
 const Role = db.role;
 
-/**
- * While in DEVELOPMENT every time you start up the server
- * it will drop the existing tables and create the new ones.
- * If to be used in PRODUCTION remove the {force: true} parameter
- * from the sync() function. Beforehand create the tables manually.
- */
-db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and Resync DB");
-    dbInitial();
-});
+db.mongoose
+    .connect(process.env.MONGO_URI_DEV, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
+    .then(() => {
+        console.log("Successfully connected to MongoDB");
+        initial();
+    })
+    .catch((error) => {
+        console.error("Connection error", error);
+        process.exit(1);
+    });
 
-function dbInitial() {
-    Role.create({
-        id: 1,
-        name: "user",
-    });
-    Role.create({
-        id: 2,
-        name: "moderator",
-    });
-    Role.create({
-        id: 3,
-        name: "admin",
+function initial() {
+    Role.estimatedDocumentCount((err, count) => {
+        if (!err && count === 0) {
+            new Role({
+                name: "user",
+            }).save((err) => {
+                if (err) {
+                    console.error("Error", err);
+                }
+                console.log("Added 'user' to roles collection");
+            });
+            new Role({
+                name: "moderator",
+            }).save((err) => {
+                if (err) {
+                    console.error("Error", err);
+                }
+                console.log("Added 'moderator' to roles collection");
+            });
+            new Role({
+                name: "admin",
+            }).save((err) => {
+                if (err) {
+                    console.error("Error", err);
+                }
+                console.log("Added 'admin' to roles collection");
+            });
+        }
     });
 }
 
