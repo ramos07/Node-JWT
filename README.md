@@ -5,8 +5,8 @@
 -   Express
 -   bcryptjs
 -   jsonwebtoken
--   Sequelize
--   MySQL
+-   mongoose
+-   MongoDB
 
 ## Backend Project Structure :file_folder:
 
